@@ -1,6 +1,11 @@
 package org.example;
 
 import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvCustomBindByName;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public class CsvExcelClass {
 
     @CsvBindByName(column = "Name")
@@ -17,15 +22,15 @@ public class CsvExcelClass {
     private String InvoiceType;
     @CsvBindByName(column = "InvoiceNumber")
     private String InvoiceNumber;
-    @CsvBindByName(column = "InvoiceDate")
-    private String InvoiceDate;
+    @CsvCustomBindByName(column = "InvoiceDate", converter = LocaDateConverter.class)
+    private LocalDate InvoiceDate;
 
-    public String getInvoiceDate() {
+    public LocalDate getInvoiceDate() {
         return InvoiceDate;
     }
 
-    public void setInvoiceDate(String invoiceDate) {
-        InvoiceDate = invoiceDate;
+    public void setInvoiceDate(LocalDate invoiceDate) {
+       this.InvoiceDate = invoiceDate;
     }
 
     public String getInvoiceNumber() {

@@ -44,9 +44,11 @@ public class ExcelWriter {
             row.createCell(3).setCellValue(user.getPANNo());
             row.createCell(4).setCellValue(user.getInvoiceType());
             row.createCell(5).setCellValue(user.getInvoiceNumber());
-            //LocalDate invoiceDate = LocalDate.parse(user.getInvoiceDate());
-            LocalDate inputDate = parseDate(user.getInvoiceDate(),inputFormatter );
-            String formattedDate = inputDate.format(outputformatter);
+            //LocalDate invoiceDate = LocalDate.parse(user.getInvoiceDate(),);
+            //String formattedDate = invoiceDate.format(OUTPUT_FORMATTER);
+            //row.createCell(6).setCellValue(formattedDate);
+            //LocalDate inputDate = parseDate(user.getInvoiceDate().toString(),inputFormatter );
+            String formattedDate = user.getInvoiceDate().format(outputformatter);
             row.createCell(6).setCellValue(formattedDate);
         }
 
