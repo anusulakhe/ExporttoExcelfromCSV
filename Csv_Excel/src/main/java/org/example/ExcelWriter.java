@@ -4,16 +4,22 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 
 @Component
 public class ExcelWriter {
+
+    //LocalDate invoiceDate;
+    DateTimeFormatter outputformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MMM-yy");
 
     public void writeToExcel(List<CsvExcelClass> csvExcelClass, String filePath) {
         Workbook workbook = new XSSFWorkbook();
@@ -38,7 +44,10 @@ public class ExcelWriter {
             row.createCell(3).setCellValue(user.getPANNo());
             row.createCell(4).setCellValue(user.getInvoiceType());
             row.createCell(5).setCellValue(user.getInvoiceNumber());
-            row.createCell(6).setCellValue(user.getInvoiceDate());
+            //LocalDate invoiceDate = LocalDate.parse(user.getInvoiceDate());
+            LocalDate inputDate = parseDate(user.getInvoiceDate(),inputFormatter );
+            String formattedDate = inputDate.format(outputformatter);
+            row.createCell(6).setCellValue(formattedDate);
         }
 
         try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
@@ -47,4 +56,13 @@ public class ExcelWriter {
             e.printStackTrace();
         }
     }
+
+    private static LocalDate parseDate(String invoiceDate, DateTimeFormatter formatter) {
+        try {
+            return LocalDate.parse(invoiceDate,formatter);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
 }
